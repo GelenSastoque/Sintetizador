@@ -58,7 +58,8 @@ public class Guitarra : MonoBehaviour
             float[] timeArray = timeValues.ToArray();
             valoresAmplitud= amplitudeValues.ToArray();
         }
-        else{
+        else
+        {
             Debug.Log("No ta el archivo unu");
         }
         audioSource = gameObject.AddComponent<AudioSource>();
@@ -70,9 +71,9 @@ public class Guitarra : MonoBehaviour
         waveformDropdown.value = waveformIndex;
 
         for (int i = 0; i < amplitudeSliders.Length; i++)
-    {
-        amplitudeSliders[i].value = Amplitudes[i];
-    }
+        {
+            amplitudeSliders[i].value = Amplitudes[i];
+        }
     }
 
     // Update is called once per frame
@@ -332,6 +333,19 @@ public class Guitarra : MonoBehaviour
     {
         waveformType = (WaveformType)index;
     }
-        
+    public void OnAttackValueChanged(float value)
+    {
+        A = value; // Actualizar el valor de A con el valor del slider
+    }
+    public void OnDecayValueChanged(float value)
+    {
+        D = value; // Actualizar el valor de D con el valor del slider
+    }
+
+    public void OnSustainValueChanged(float value)
+    {
+        S = value; // Actualizar el valor de S con el valor del slider
+    }
+
 }
 

@@ -29,15 +29,18 @@ public class Dropdown : MonoBehaviour
     public GameObject ArmoniV;
 
     public GameObject ArmoniVD;
+
+    public GameObject ArmoniG;
+
     void Start()
     {
             // Activa el objeto ADSRoriginal al inicio
-        ADSRoriginal.SetActive(true);
-        DropADSRTipoO.SetActive(true);
-        SAttackP.SetActive(true);
-        SDecayP.SetActive(true);
-        SSustainP.SetActive(true);
-        ArmoniP.SetActive(true);
+        ADSRoriginal.SetActive(false);
+        DropADSRTipoO.SetActive(false);
+        SAttackP.SetActive(false);
+        SDecayP.SetActive(false);
+        SSustainP.SetActive(false);
+        ArmoniP.SetActive(false);
     }
      public void OnDropdownValueChanged(int index)
     {
@@ -65,7 +68,7 @@ public class Dropdown : MonoBehaviour
         // Activa el objeto correspondiente según la selección del Dropdown
         switch (index)
         {
-            case 0:
+            case 1:
                 ADSRoriginal.SetActive(true);
                 DropADSRTipoO.SetActive(true);
                 SAttackP.SetActive(true);
@@ -73,7 +76,7 @@ public class Dropdown : MonoBehaviour
                 SSustainP.SetActive(true);
                 ArmoniP.SetActive(true);
                 break;
-            case 1:
+            case 2:
                 Violin.SetActive(true);
                 DropViolinTipoO.SetActive(true);
                 SAttackV.SetActive(true);
@@ -81,15 +84,15 @@ public class Dropdown : MonoBehaviour
                 SSustainV.SetActive(true);
                 ArmoniV.SetActive(true);
                 break;
-            case 2:
+            case 3:
                 Violin_Datos.SetActive(true);
                 DropViolDatTipoO.SetActive(true);
                 ArmoniVD.SetActive(true);
                 break;
-            case 3:
+            case 4:
                 Guitarra_Datos.SetActive(true);
                 DropGuitarDatTipoO.SetActive(true);
-                
+                ArmoniG.SetActive(true);
                 break;
                 
             // Agrega más casos según las opciones del Dropdown

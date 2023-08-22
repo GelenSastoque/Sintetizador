@@ -331,5 +331,18 @@ public class Violin_Datos : MonoBehaviour
     {
         waveformType = (WaveformType)index;
     }
-    
+    public void OnAttackValueChanged(float value)
+    {
+        A = value; // Actualizar el valor de A con el valor del slider
+    }
+    public void OnDecayValueChanged(float value)
+    {
+        D = value; // Actualizar el valor de D con el valor del slider
+    }
+
+    public void OnSustainValueChanged(float value)
+    {
+        S = value; // Actualizar el valor de S con el valor del slider
+    }
+
 }
