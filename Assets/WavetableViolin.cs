@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using TMPro;
 using System.Globalization;
 
-public class WavetableSynthesis : MonoBehaviour
+public class WavetableViolin : MonoBehaviour
 {
     public int wavetableSize = 1024;
     public float frequency = 440f;
@@ -26,7 +26,7 @@ public class WavetableSynthesis : MonoBehaviour
 
     public TMP_Dropdown waveformDropdown; 
 
-    private string csvFileName = "audio_data_guitar.csv";
+    private string csvFileName = "audio_data_promedio.csv";
     private float[] valoresAmplitud;
     List<float> amplitudeValues = new List<float>();
 

@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using TMPro;
 using System.Globalization;
 
-public class WavetableSynthesis : MonoBehaviour
+public class WavetableSynthesisOriginal : MonoBehaviour
 {
     public int wavetableSize = 1024;
     public float frequency = 440f;
@@ -26,12 +26,6 @@ public class WavetableSynthesis : MonoBehaviour
 
     public TMP_Dropdown waveformDropdown; 
 
-    private string csvFileName = "audio_data_guitar.csv";
-    private float[] valoresAmplitud;
-    List<float> amplitudeValues = new List<float>();
-
-    public int ADSRindex = 0;
-
     public enum WaveType
     {
         Sine,
@@ -44,32 +38,6 @@ public class WavetableSynthesis : MonoBehaviour
     {
         // audioSource = GetComponent<AudioSource>();
         // sampleRate = AudioSettings.outputSampleRate;
-        string csvPath = Application.dataPath + "/" + csvFileName;
-        if (File.Exists(csvPath))
-        {
-            List<string> lines = new List<string>(File.ReadAllLines(csvPath));
-            List<float> timeValues = new List<float>();
-            List<float> amplitudeValues = new List<float>(); // No necesitas declarar esto arriba, ya que se creará aquí
-
-            // Crear una cultura específica que use el punto como separador decimal
-            CultureInfo culture = new CultureInfo("en-US"); 
-
-            for (int i = 1; i < lines.Count; i++) // Ignorar la primera línea de encabezado
-            {
-                string[] values = lines[i].Split(',');
-                float time = float.Parse(values[0], culture); // Especifica la cultura aquí
-                float amplitude = float.Parse(values[1], culture); // Especifica la cultura aquí
-
-                timeValues.Add(time);
-                amplitudeValues.Add(amplitude);
-            }
-            // Convierte las listas a arreglos si lo necesitas
-            float[] timeArray = timeValues.ToArray();
-            valoresAmplitud= amplitudeValues.ToArray();
-        }
-        else{
-            Debug.Log("No ta el archivo unu");
-        }
         GenerateWavetable();
         audioSource = gameObject.AddComponent<AudioSource>();
         audioSource.playOnAwake = false;
@@ -217,16 +185,8 @@ public class WavetableSynthesis : MonoBehaviour
     private void OnAudioFilterRead(float[] data, int channels)
     {
         // phase = 0.0f;
-        ADSRindex = 0;
         for (int i = 0; i < data.Length; i += channels)
         {   
-            if (ADSRindex<valoresAmplitud.Length)
-            {
-                amplitude = valoresAmplitud[ADSRindex];
-            }
-            else{
-                amplitude = 0f;
-            }
             float currentSample = 0.0f;
             switch (waveType)
             {
@@ -255,7 +215,6 @@ public class WavetableSynthesis : MonoBehaviour
             {
                 phase -= 1f;
             }
-            ADSRindex++;
         }
     }
 

@@ -63,6 +63,7 @@ public class Dropdown : MonoBehaviour
         ArmoniP.SetActive(false);
         ArmoniV.SetActive(false);
         ArmoniVD.SetActive(false);
+        ArmoniG.SetActive(false);
         // Desactiva más objetos aquí
 
         // Activa el objeto correspondiente según la selección del Dropdown
