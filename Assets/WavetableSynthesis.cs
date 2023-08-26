@@ -20,7 +20,18 @@ public class WavetableSynthesis : MonoBehaviour
     private float[] wavetableSquare;
     private float[] wavetableTriangle;
     private float[] wavetableSawtooth;
+    [Range(5,450)]
+    public float A=5;
 
+    [Range(20,800)]
+    public float D=695;
+
+    [Range(200,1000)]
+    public float S=260;
+
+    int tA;
+    int tD;
+    int tS;
 
     float sampleRate = 44100f;
 
@@ -70,7 +81,11 @@ public class WavetableSynthesis : MonoBehaviour
         else{
             Debug.Log("No ta el archivo unu");
         }
-        GenerateWavetable();
+        // GenerateWavetable();
+        GenerateWavetableSeno();
+        GenerateWavetableSquare();
+        GenerateWavetableTriangle();
+        GenerateWavetableSawtooth();
         audioSource = gameObject.AddComponent<AudioSource>();
         audioSource.playOnAwake = false;
         audioSource.spatialBlend = 0;
@@ -197,20 +212,142 @@ public class WavetableSynthesis : MonoBehaviour
         }
     }
 
-    private void GenerateWavetable()
+    void ADSRvalues()
+    {
+        tA=(int)(A*(sampleRate/1000));
+        tD=(int)(D*(sampleRate/1000));
+        tS=(int)(S*(sampleRate/1000));
+    }
+    public float[] env;
+    void ADSRuwu()
+    {
+        float[] As=new float[tA];
+        float[] Ds=new float[tD];
+        float[] Ss=new float[tS];
+    
+        //Para obtener el ataque
+        for(int i=0;i<tA;i++)
+        {
+            // As[i]=(Mathf.Pow((i/tA),(1.0f/3.0f)));
+            // As[i]=0.8170946f + (-0.358073f - 0.8170946f)/(1f + Mathf.Pow((i/0.5386146f),(11.05702f)));
+            As[i]=(1f/tA)*i;
+        }
+
+        //Para obtener el Decay
+        // float ID=0.5f/tD;
+        // float VD=1f;
+
+        for(int i=0;i<tD;i++)
+        {
+            // Ds[i]=(Mathf.Pow(VD,(1.0f/3.0f)));
+            // VD-=ID;
+            // Ds[i]=0.5899364f + (0.8002658f - 0.5899364f)/(1f + Mathf.Pow(((tA+i)/0.8827484f),(30.63825f)));
+            Ds[i] = -0.8856351f + (0.9998362f - (-0.8856351f))/(1f + Mathf.Pow(((tA + i)/0.6423417f),(0.5575749f)));
+        }
+
+        //Para obtener el Sustain
+
+        float m=-(0.8f/tS);
+        for(int i=0;i<tS;i++)
+        {
+            Ss[i]=(-0.018f/tS)*i + 0.07844f;
+        }
+
+        //Para unir todos los componentes del ADS en un solo arreglo final
+
+        float[] result=new float[As.Length+Ds.Length+Ss.Length];
+        As.CopyTo(result,0);
+        Ds.CopyTo(result,As.Length);
+        Ss.CopyTo(result,As.Length+Ds.Length);
+        env=new float[result.Length];
+        result.CopyTo(env,0);
+
+    }
+
+    private float CreateSeno(int timeindex, float frecuencia)
+    {
+        return Mathf.Sin(2f * Mathf.PI * timeindex * frecuencia / sampleRate);
+    }
+
+    private void GenerateWavetableSeno()
     {
         wavetableSeno = new float[wavetableSize];
-        wavetableSquare = new float[wavetableSize];
-        wavetableTriangle = new float[wavetableSize];
-        wavetableSawtooth = new float[wavetableSize];
-
+        float f = sampleRate / wavetableSize;
         for (int i = 0; i < wavetableSize; i++)
         {
-            float t = (float)i / wavetableSize;
-            wavetableSeno[i] = Mathf.Sin(2f * Mathf.PI * t);
-            wavetableSquare[i] = Mathf.Sign(Mathf.Sin(2f * Mathf.PI * t));
-            wavetableTriangle[i] = 2f * Mathf.Abs(2f * t - 1f) - 1f;
-            wavetableSawtooth[i] = 2f * t - 1f;
+            wavetableSeno[i] = CreateSeno(i, f);
+        }
+    }
+
+    private float CreateSquare(int timeindex, float frecuencia)
+    {
+        return Mathf.Sign(Mathf.Sin(2 * Mathf.PI * timeindex * frecuencia / sampleRate));
+    }
+
+    private void GenerateWavetableSquare()
+    {
+        wavetableSquare = new float[wavetableSize];
+        float f = sampleRate / wavetableSize;
+        for (int i = 0; i < wavetableSize; i++)
+        {
+            wavetableSquare[i] = CreateSquare(i, f);
+        }
+    }
+      
+    private float CreateTriangle(int timeIndex, float frecuencia)
+    {
+        int Tm = (int)(sampleRate/frecuencia);
+        float m1 = 1 / ((Tm / 4.0f));
+        float m2 = -2 / ((Tm * (3 / 4.0f)) - ((Tm / 4.0f)));
+        float m3 = 1 / (Tm - ((Tm * 3) / 4.0f));
+
+        float b1 = 1 - (m1 * (Tm / 4));
+        float b2 = 1 - (m2 * (Tm / 4));
+        float b3 = 0 - (m3 * Tm);
+        int x = timeIndex - ((int)(timeIndex / Tm) * Tm);
+
+        if (x <= (Tm / 4))
+            return (m1 * x + b1);
+        else if (x > (Tm / 4) && x <= ((Tm * 3) / 4))
+            return (m2 * x + b2);
+        else
+            return (m3 * x + b3);
+    }
+
+    private void GenerateWavetableTriangle()
+    {
+        wavetableTriangle = new float[wavetableSize];
+        float f = sampleRate / wavetableSize;
+        for (int i = 0; i < wavetableSize; i++)
+        {
+            wavetableTriangle[i] = CreateTriangle(i, f);
+        }
+    }
+
+    private float CreateSawTooth(int timeIndex, float frecuencia)
+    {
+        int Tm = (int)(sampleRate/frecuencia);
+        float m1 = 1 / ((Tm / 2.0f));
+        float m2 = 1 / (Tm - ((Tm) / 2.0f));
+
+        float b1 = 1 - (m1 * (Tm / 2));
+        float b2 = 0 - (m2 * Tm);
+
+        int x = timeIndex - ((int)(timeIndex / Tm) * Tm);
+
+        if (x <= (Tm / 2))
+            return (m1 * x + b1);
+        else
+            return (m2 * x + b2);
+    }
+
+    private void GenerateWavetableSawtooth()
+    {
+        wavetableSawtooth = new float[wavetableSize];
+        float f = sampleRate / wavetableSize;
+        for (int i = 0; i < wavetableSize; i++)
+        {
+            wavetableSawtooth[i] = CreateSawTooth(i, f);
         }
     }
 
@@ -231,16 +368,16 @@ public class WavetableSynthesis : MonoBehaviour
             switch (waveType)
             {
                 case WaveType.Sine:
-                    currentSample = wavetableSeno[(int)(phase * wavetableSize)] * amplitude;
+                    currentSample = wavetableSeno[(int)(phase * wavetableSize)];
                     break;
                 case WaveType.Square:
-                    currentSample = wavetableSquare[(int)(phase * wavetableSize)] * amplitude;
+                    currentSample = wavetableSquare[(int)(phase * wavetableSize)];
                     break;
                 case WaveType.Triangle:
-                    currentSample = wavetableTriangle[(int)(phase * wavetableSize)] * amplitude;
+                    currentSample = wavetableTriangle[(int)(phase * wavetableSize)];
                     break;
                 case WaveType.Sawtooth:
-                    currentSample = wavetableSawtooth[(int)(phase * wavetableSize)] * amplitude;
+                    currentSample = wavetableSawtooth[(int)(phase * wavetableSize)];
                     break;
             }
 
