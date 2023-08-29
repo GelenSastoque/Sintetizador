@@ -22,7 +22,7 @@ public class WavetableSynthesisOriginal : MonoBehaviour
     private float[] wavetableSawtooth;
 
 
-    float sampleRate = 44100f;
+    float sampleRate = 44100;
 
     public TMP_Dropdown waveformDropdown; 
 

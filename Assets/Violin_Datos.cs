@@ -283,50 +283,50 @@ public class Violin_Datos : MonoBehaviour
     private void OnAudioFilterRead(float[] data, int channels)
     {
         for(int i=0; i<data.Length;i+=channels)
-    {
-        float x=0;
-        for(int n=1; n<=nA;n++)
         {
-            Tm=(int)(FrecuenciaMuestreo/(frecuencia*n));
-            switch(waveformType){
-                case WaveformType.Sine:
-                    x+=CreateSeno(timeIndex, frecuencia*n, FrecuenciaMuestreo,Amplitudes[n-1]);
-                    break;
+            float x=0;
+            for(int n=1; n<=nA;n++)
+            {
+                Tm=(int)(FrecuenciaMuestreo/(frecuencia*n));
+                switch(waveformType){
+                    case WaveformType.Sine:
+                        x+=CreateSeno(timeIndex, frecuencia*n, FrecuenciaMuestreo,Amplitudes[n-1]);
+                        break;
 
-                case WaveformType.Square:
-                    x+=CreateSquare(timeIndex, frecuencia*n, FrecuenciaMuestreo,Amplitudes[n-1]);
-                    break;
-                
-                case WaveformType.Triangle:
-                    x+=CreateTriangle(timeIndex,frecuencia*n,FrecuenciaMuestreo,Tm,Amplitudes[n-1]);
-                    break;
+                    case WaveformType.Square:
+                        x+=CreateSquare(timeIndex, frecuencia*n, FrecuenciaMuestreo,Amplitudes[n-1]);
+                        break;
+                    
+                    case WaveformType.Triangle:
+                        x+=CreateTriangle(timeIndex,frecuencia*n,FrecuenciaMuestreo,Tm,Amplitudes[n-1]);
+                        break;
 
-                case WaveformType.Sawtooth:
-                    x+=CreateSawTooth(timeIndex,frecuencia*n,FrecuenciaMuestreo,Tm,Amplitudes[n-1]);
-                    break;
+                    case WaveformType.Sawtooth:
+                        x+=CreateSawTooth(timeIndex,frecuencia*n,FrecuenciaMuestreo,Tm,Amplitudes[n-1]);
+                        break;
+                }
             }
-        }
-        float E;
-        if (ADSRindex<valoresAmplitud.Length)
-        {
-            E=valoresAmplitud[ADSRindex];
-        }
-        else{
-            E=0f;
-        }
+            float E;
+            if (ADSRindex<valoresAmplitud.Length)
+            {
+                E=valoresAmplitud[ADSRindex];
+            }
+            else{
+                E=0f;
+            }
 
-        data[i]=E*x/(float)nA;
-        if(channels==2)
-        {
-            data[i+1]=E*x/(float)nA;
+            data[i]=E*x/(float)nA;
+            if(channels==2)
+            {
+                data[i+1]=E*x/(float)nA;
 
+            }
+            timeIndex++;
+            if(timeIndex>=(FrecuenciaMuestreo*TiempoSegundos)){
+                timeIndex=0;
+            }
+            ADSRindex++;
         }
-        timeIndex++;
-        if(timeIndex>=(FrecuenciaMuestreo*TiempoSegundos)){
-            timeIndex=0;
-        }
-        ADSRindex++;
-    }
         
        
     }

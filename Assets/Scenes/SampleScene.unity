@@ -6406,16 +6406,43 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2c77bb8cb445864ebf6a301171c3797, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wavetableSize: 1024
-  frequency: 440
-  amplitude: 0.5
-  waveType: 0
+  frecuencia: 0
+  FrecuenciaMuestreo: 1024
+  TiempoSegundos: 2
+  audioSource: {fileID: 0}
+  timeIndex: 0
   A: 5
   D: 695
   S: 260
-  waveformDropdown: {fileID: 266658348}
+  tA: 0
+  tD: 0
+  tS: 0
   ADSRindex: 0
+  waveformDropdown: {fileID: 266658348}
+  csvFileName: audio_data_guitar.csv
+  valoresAmplitud: []
+  amplitudeValues: []
+  Amplitudes:
+  - 0.9
+  - 0.57
+  - 0.9
+  - 0.94
+  - 0.94
+  - 0.73
+  - 0.63
+  - 0.7
+  - 0.87
+  - 0.77
+  amplitudeSliders: []
+  sineWaveTable: []
+  squareWaveTable: []
+  triangleWaveTable: []
+  sawtoothWaveTable: []
   env: []
+  waveformType: 1
+  nA: 10
+  s: 0
+  Tm: 0
 --- !u!4 &368111145
 Transform:
   m_ObjectHideFlags: 0
@@ -20224,6 +20251,18 @@ MonoBehaviour:
   D: 200
   S: 730
   waveformDropdown: {fileID: 1320123684}
+  valoresAmplitud: []
+  Amplitudes:
+  - 1
+  - 0.8
+  - 0.9
+  - 0.37
+  - 0.73
+  - 0.9
+  - 0.57
+  - 0.53
+  - 0.57
+  - 0.47
   ADSRindex: 0
   env: []
 --- !u!4 &1194406494
