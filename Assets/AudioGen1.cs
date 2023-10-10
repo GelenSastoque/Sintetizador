@@ -86,10 +86,16 @@ public class AudioGen1 : MonoBehaviour
         return (float)(random.NextDouble()*2.0-1.0);
     }
 
+    // public float PadWave(int timeindex, float frecuencia)
+    // {
+    //     if (timeindex < wavetableSize) return Mathf.Sign(Mathf.Sin(2 * Mathf.PI * timeindex * frecuencia / FM));
+    //     else return Mathf.Sin(2 * Mathf.PI * timeindex * frecuencia / FM);
+    // }
+
     private void GenerateWavetable(){
         wavetable = new float[wavetableSize];
         wavetableDetune = new float[wavetableSize];
-        float f=sampleRate/wavetableSize;
+        float f = sampleRate / wavetableSize;
         for(int i = 0; i<wavetableSize;i++){
             switch(waveformType){
                 case WaveformType.Sine:
@@ -229,6 +235,6 @@ public class AudioGen1 : MonoBehaviour
 
     void Start(){
         Amplitud=DBFSToLinearValue(dbfsValue);
-        //frecuencias.Add(0f);
+        // frecuencias.Add(0f);
     }
 }

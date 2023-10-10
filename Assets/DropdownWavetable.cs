@@ -10,6 +10,7 @@ public class DropdownWavetable : MonoBehaviour
     public GameObject Violin;
     public GameObject Original;
     public GameObject Guitarra_Datos;
+    public GameObject SynthPolifonico;
     public GameObject DropViolinTipoO;
     public GameObject DropOriginalTipoO;
     public GameObject DropGuitarDatTipoO;
@@ -27,6 +28,7 @@ public class DropdownWavetable : MonoBehaviour
         Violin.SetActive(false);
         Original.SetActive(false);
         Guitarra_Datos.SetActive(false);
+        SynthPolifonico.SetActive(false);
         DropViolinTipoO.SetActive(false);
         DropOriginalTipoO.SetActive(false);
         DropGuitarDatTipoO.SetActive(false);
@@ -47,7 +49,9 @@ public class DropdownWavetable : MonoBehaviour
                 Guitarra_Datos.SetActive(true);
                 DropGuitarDatTipoO.SetActive(true);
                 break;
-                
+            case 4:
+                SynthPolifonico.SetActive(true);
+                break;                
             // Agrega más casos según las opciones del Dropdown
         }
     }

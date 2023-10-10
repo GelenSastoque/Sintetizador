@@ -40,16 +40,16 @@ public class DemoScript : MonoBehaviour
     private Playback _playback;
 
     public TMP_Dropdown musicDropdown; // Asigna el Dropdown desde el Inspector
-    public string[] midiFilePaths = {Application.dataPath + "/MIDIS/MIDI-3.mid",Application.dataPath + "/MIDIS/mario.mid",Application.dataPath + "/MIDIS/MIDI-2.mid"};
+    // public string[] midiFilePaths = {Application.dataPath + "/MIDIS/Village-MIDI.mid",Application.dataPath + "/MIDIS/mario.mid",Application.dataPath + "/MIDIS/MIDI-2.mid"};
 
-    // string midiFilePath = Application.dataPath + "/MIDIS/MIDI-3.mid";
-    // string midiFilePath2 = Application.dataPath + "/MIDIS/mario.mid";
-    // string midiFilePath3 = Application.dataPath + "/MIDIS/MIDI-2.mid";
+    string midiFilePath = Application.dataPath + "/MIDIS/Village-MIDI.mid";
+    string midiFilePath2 = Application.dataPath + "/MIDIS/mario.mid";
+    string midiFilePath3 = Application.dataPath + "/MIDIS/MIDI-2.mid";
 
     private void Start()
     {
         InitializeOutputDevice();
-        var midiFile = MidiFile.Read(midiFilePaths[0]);
+        var midiFile = MidiFile.Read(midiFilePath);
 
         InitializeFilePlayback(midiFile);
 
@@ -67,21 +67,21 @@ public class DemoScript : MonoBehaviour
 
     public void ButtonMidi1(){
             StopPlayback();
-            var midiFile = MidiFile.Read(midiFilePaths[0]);
+            var midiFile = MidiFile.Read(midiFilePath);
             InitializeFilePlayback(midiFile);
             StartPlayback();
     }
 
     public void ButtonMidi2(){
             StopPlayback();
-            var midiFile = MidiFile.Read(midiFilePaths[1]);
+            var midiFile = MidiFile.Read(midiFilePath2);
             InitializeFilePlayback(midiFile);
             StartPlayback();
     }
 
     public void ButtonMidi3(){
             StopPlayback();
-            var midiFile = MidiFile.Read(midiFilePaths[2]);
+            var midiFile = MidiFile.Read(midiFilePath3);
             InitializeFilePlayback(midiFile);
             StartPlayback();
     }
